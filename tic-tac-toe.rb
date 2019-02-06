@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 
-=begin
+def play
+  system "clear"
+  puts '''
+  ###################
+  ### TIC TAC TOE ###
+  ###################
 
   A simple tic-tac-toe game played from the command line implemented in Ruby
 
@@ -9,14 +14,9 @@
   [1][2][3]
   [4][5][6]
   [7][8][9]
-
-=end
-
-def play
-  puts "\n"
-  puts '###################'
-  puts '### TIC TAC TOE ###'
-  puts '###################'
+  '''
+  sleep(4)
+  system "clear"
 
   board = [
     [' ',' ',' '],
@@ -49,7 +49,9 @@ def play
       print "\n#: "
       move = gets.chomp
       break if options.keys.include?(move.to_i)
-      puts "\nPlease choose a valid square"
+      puts "\n\nPlease choose a valid square"
+      sleep(0.75)
+      system "clear"
     end
 
     row, column = get_coordinate_of_move(move)
@@ -89,15 +91,15 @@ def check_for_winner(board, player)
     .map { |char| char == player ? char : ' ' }
     .reduce('', :+)
 
-  # Check all horizontal
-  return [true, player] if board_string.include?("#{player * 3}      ")
-  return [true, player] if board_string.include?("   #{player * 3}   ")
-  return [true, player] if board_string.include?("      #{player * 3}")
   # Check all vertical
   return [true, player] if board_string.include?("#{player}  #{player}  #{player}")
+  # Check all horizontal
+  return [true, player] if board_string[0..2] == player * 3
+  return [true, player] if board_string[3..5] == player * 3
+  return [true, player] if board_string[6..8] == player * 3
   # Check diagonal
-  return [true, player] if board_string.include?("#{player}   #{player}   #{player}")
-  return [true, player] if board_string.include?("  #{player} #{player} #{player}  ")
+  return [true, player] if board_string == "#{player}   #{player}   #{player}"
+  return [true, player] if board_string == "  #{player} #{player} #{player}  "
 
   # No one has won
   return [false, '']
