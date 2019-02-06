@@ -13,18 +13,16 @@
 =end
 
 def main
-  puts "\n\n### TIC TAC TOE ###\n\n"
+  puts "\n"
+  puts '###################'
+  puts '### TIC TAC TOE ###'
+  puts '###################'
 
   board = [
     [' ',' ',' '],
     [' ',' ',' '],
     [' ',' ',' ']
   ]
-
-  print_board(board)
-
-  turn = 1
-
   options = {
     1 => '1: top-left',
     2 => '2: top-center',
@@ -37,19 +35,37 @@ def main
     9 => '9: bottom-right'
   }
 
+  turn = 1
+
   while turn < 10 do
     player = turn.odd? ? 'x' : 'o'
-    puts "\n#{player.upcase}'s turn.  Enter the number for the move you want to make:"
-    options.each { |k, v| puts "#{v}" }
-    move = gets.chomp
+    move = ''
+
+    loop do
+      print_board(board)
+
+      puts "\n#{player.upcase}'s turn.  Enter the number for square you want to take:\n\n"
+      options.each { |k, v| puts "#{v}" }
+      print "\n#: "
+
+      move = gets.chomp
+
+      if options.keys.include?(move.to_i)
+        break
+      else
+        puts "\nPlease choose a valid square"
+      end
+    end
+
+    # puts "\n[1][2][3]\n[4][5][6]\n[7][8][9]\n"
+
 
     row, column = get_coordinate_of_move(move)
     board[row][column] = player
 
-    print_board(board)
     options.delete(move.to_i)
 
-    game_over, winner = check_for_winner(board, move, player)
+    game_over, winner = check_for_winner(board, player)
 
     if game_over
       puts "\n#{winner.upcase} WINS!!!!\n"
@@ -61,6 +77,7 @@ def main
 end
 
 def print_board(board)
+  puts ""
   board.each do |row|
     puts row.reduce("") { |string, column| string << "[#{column}]" }
   end
@@ -72,10 +89,10 @@ def get_coordinate_of_move(move)
   [row, column]
 end
 
-def check_for_winner(board, move, player)
+def check_for_winner(board, player)
   board_string = board
     .flatten
-    .map { |char| char == 'x' ? char : ' ' }
+    .map { |char| char == player ? char : ' ' }
     .reduce("", :+)
 
   # Check all horizontal
