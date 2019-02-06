@@ -13,6 +13,7 @@ def play
 
   wrong_letters = []
   correct_letters = []
+  won = false
 
   while wrong_letters.length < 6
     system "clear"
@@ -53,21 +54,23 @@ def play
     if prompt.gsub('_', '').gsub(' ', '') == word
       puts prompt
       puts 'YOU DID IT!!!'
+      won = true
       break
     end
   end
 
-  # You didn't win
-  puts "\n\nBetter luck next time!!\n\n"
-  puts "   _________   "
-  puts "  |         |  "
-  puts "  |         0  "
-  puts "  |        /|\\"
-  puts "  |        / \\"
-  puts "  |            "
-  puts "  |            "
-  puts "------         "
-  puts "\n btw, the word was #{word}"
+  if !won
+    puts "\n\nBetter luck next time!!\n\n"
+    puts "   _________   "
+    puts "  |         |  "
+    puts "  |         0  "
+    puts "  |        /|\\"
+    puts "  |        / \\"
+    puts "  |            "
+    puts "  |            "
+    puts "------         "
+    puts "\n btw, the word was #{word}"
+  end
 end
 
 play()
