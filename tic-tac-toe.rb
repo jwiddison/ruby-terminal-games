@@ -12,7 +12,7 @@
 
 =end
 
-def main
+def play
   puts "\n"
   puts '###################'
   puts '### TIC TAC TOE ###'
@@ -23,6 +23,7 @@ def main
     [' ',' ',' '],
     [' ',' ',' ']
   ]
+
   options = {
     1 => '1: top-left',
     2 => '2: top-center',
@@ -43,34 +44,26 @@ def main
 
     loop do
       print_board(board)
-
-      puts "\n#{player.upcase}'s turn.  Enter the number for square you want to take:\n\n"
+      puts "#{player.upcase}'s turn.  Enter the number for square you want to take:\n\n"
       options.each { |k, v| puts "#{v}" }
       print "\n#: "
-
       move = gets.chomp
-
-      if options.keys.include?(move.to_i)
-        break
-      else
-        puts "\nPlease choose a valid square"
-      end
+      break if options.keys.include?(move.to_i)
+      puts "\nPlease choose a valid square"
     end
-
-    # puts "\n[1][2][3]\n[4][5][6]\n[7][8][9]\n"
-
 
     row, column = get_coordinate_of_move(move)
     board[row][column] = player
-
     options.delete(move.to_i)
 
     game_over, winner = check_for_winner(board, player)
 
     if game_over
       puts "\n#{winner.upcase} WINS!!!!\n"
+      print_board(board)
       turn = 10
     else
+      system "clear" or system "cls"
       turn += 1
     end
   end
@@ -81,6 +74,7 @@ def print_board(board)
   board.each do |row|
     puts row.reduce("") { |string, column| string << "[#{column}]" }
   end
+  puts ""
 end
 
 def get_coordinate_of_move(move)
@@ -93,10 +87,12 @@ def check_for_winner(board, player)
   board_string = board
     .flatten
     .map { |char| char == player ? char : ' ' }
-    .reduce("", :+)
+    .reduce('', :+)
 
   # Check all horizontal
-  return [true, player] if board_string.include?(player * 3)
+  return [true, player] if board_string.include?("#{player * 3}      ")
+  return [true, player] if board_string.include?("   #{player * 3}   ")
+  return [true, player] if board_string.include?("      #{player * 3}")
   # Check all vertical
   return [true, player] if board_string.include?("#{player}  #{player}  #{player}")
   # Check diagonal
@@ -107,4 +103,4 @@ def check_for_winner(board, player)
   return [false, '']
 end
 
-main()
+play()
