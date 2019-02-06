@@ -1,21 +1,21 @@
 #!/usr/bin/env ruby
 
 def play
-  system "clear" or system "cls"
-  puts "##################"
-  puts '#### HANG MAN ####'
-  puts "##################"
-
-  wrong_letters = []
-  correct_letters = []
+  system "clear"
+  puts "#################"
+  puts '#### HANGMAN ####'
+  puts "#################"
 
   puts "\nWhat word do you want people to guess?"
   print '#: '
   word = gets.chomp.upcase
   prompt = word.split('').map { |x| "_ " }.join('')
 
+  wrong_letters = []
+  correct_letters = []
+
   while wrong_letters.length < 6
-    system "clear" or system "cls"
+    system "clear"
 
     if !wrong_letters.empty?
       puts "\nIncorrect letters you've guessed:"

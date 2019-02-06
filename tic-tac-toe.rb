@@ -63,7 +63,7 @@ def play
       print_board(board)
       turn = 10
     else
-      system "clear" or system "cls"
+      system "clear"
       turn += 1
     end
   end
