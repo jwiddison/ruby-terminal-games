@@ -91,15 +91,13 @@ def check_for_winner(board, player)
     .map { |char| char == player ? char : ' ' }
     .reduce('', :+)
 
-  # Check all vertical
-  return [true, player] if board_string.include?("#{player}  #{player}  #{player}")
   # Check all horizontal
-  return [true, player] if board_string[0..2] == player * 3
-  return [true, player] if board_string[3..5] == player * 3
-  return [true, player] if board_string[6..8] == player * 3
+  return [true, player] if board_string.scan(/.{3}/).include?(player * 3)
+  # Check all vertical
+  return [true, player] if board_string.match?(/#{player}.{2}#{player}.{2}#{player}/)
   # Check diagonal
-  return [true, player] if board_string == "#{player}   #{player}   #{player}"
-  return [true, player] if board_string == "  #{player} #{player} #{player}  "
+  return [true, player] if board_string.match?("#{player}.{3}#{player}.{3}#{player}")
+  return [true, player] if board_string.match?(".{2}#{player}.#{player}.#{player}.{2}")
 
   # No one has won
   return [false, '']
