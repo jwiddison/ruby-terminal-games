@@ -43,15 +43,20 @@ def main
     options.each { |k, v| puts "#{v}" }
     move = gets.chomp
 
-    row = (move.to_i - 1) / 3
-    column = (move.to_i - 1) % 3
+    row, column = get_coordinate_of_move(move)
     board[row][column] = player
 
     print_board(board)
     options.delete(move.to_i)
 
-    check_for_winner(board)
-    turn += 1
+    game_over, winner = check_for_winner(board, move, player)
+
+    if game_over
+      puts "\n#{winner.upcase} WINS!!!!\n"
+      turn = 10
+    else
+      turn += 1
+    end
   end
 end
 
@@ -61,7 +66,28 @@ def print_board(board)
   end
 end
 
-def check_for_winner(board)
+def get_coordinate_of_move(move)
+  row = (move.to_i - 1) / 3
+  column = (move.to_i - 1) % 3
+  [row, column]
+end
+
+def check_for_winner(board, move, player)
+  board_string = board
+    .flatten
+    .map { |char| char == 'x' ? char : ' ' }
+    .reduce("", :+)
+
+  # Check all horizontal
+  return [true, player] if board_string.include?(player * 3)
+  # Check all vertical
+  return [true, player] if board_string.include?("#{player}  #{player}  #{player}")
+  # Check diagonal
+  return [true, player] if board_string.include?("#{player}   #{player}   #{player}")
+  return [true, player] if board_string.include?("  #{player} #{player} #{player}  ")
+
+  # No one has won
+  return [false, '']
 end
 
 main()
