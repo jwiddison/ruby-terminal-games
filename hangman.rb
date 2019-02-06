@@ -28,30 +28,32 @@ def play
     print '#: '
     guess = gets.chomp
 
-    if guess.length == 1
-      if word.include?(guess.upcase)
-        correct_letters << guess.upcase
-        prompt = word.split('').map do |letter|
-          correct_letters.include?(letter) ? "#{letter} " : "_ "
-        end.join('')
-      else
-        if wrong_letters.include?(guess.upcase)
-          puts "\n\nYou've already guessed #{guess.upcase}!!"
-          sleep(1)
-        else
-          wrong_letters << guess.upcase
-          puts "Sorry, no #{guess.upcase}"
-        end
-      end
-
-      if prompt.gsub('_', '').gsub(' ', '') == word
-        puts prompt
-        puts 'YOU DID IT!!!'
-        break
-      end
-    else
+    if guess.length != 1
       puts "\n\nOnly guess one letter at a time!!"
-      sleep(1)
+      sleep(0.75)
+      next
+    end
+
+    if wrong_letters.include?(guess.upcase)
+      puts "\n\nYou've already guessed #{guess.upcase}!!"
+      sleep(0.75)
+      next
+    end
+
+    if word.include?(guess.upcase)
+      correct_letters << guess.upcase
+      prompt = word.split('').map do |letter|
+        correct_letters.include?(letter) ? "#{letter} " : "_ "
+      end.join('')
+    else
+      wrong_letters << guess.upcase
+      puts "Sorry, no #{guess.upcase}"
+    end
+
+    if prompt.gsub('_', '').gsub(' ', '') == word
+      puts prompt
+      puts 'YOU DID IT!!!'
+      break
     end
   end
 
