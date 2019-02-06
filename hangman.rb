@@ -69,7 +69,7 @@ def play
     puts "  |            "
     puts "  |            "
     puts "------         "
-    puts "\n btw, the word was #{word}"
+    puts "\nBTW, the word was #{word}"
   end
 end
 
