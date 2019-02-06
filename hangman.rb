@@ -35,7 +35,7 @@ def play
       next
     end
 
-    if wrong_letters.include?(guess.upcase)
+    if wrong_letters.include?(guess.upcase) || correct_letters.include?(guess.upcase)
       puts "\n\nYou've already guessed #{guess.upcase}!!"
       sleep(0.75)
       next
